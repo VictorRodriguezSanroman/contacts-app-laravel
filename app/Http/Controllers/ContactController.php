@@ -25,7 +25,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return view('contact');
+        return view('contact.create');
     }
 
     /**
@@ -78,7 +78,7 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
-        //
+        return view('contact.edit', compact('contact'));
     }
 
     /**
@@ -90,7 +90,19 @@ class ContactController extends Controller
      */
     public function update(UpdateContactRequest $request, Contact $contact)
     {
-        //
+        try {
+            $contact->update([
+                'name' => $request->name,
+                'phone_number' => $request->phone_number,
+                'email' => $request->email,
+                'age' => $request->age
+            ]);
+
+            return redirect()->route('home')->with('success', 'Contact successfully updated');
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return redirect()->back()->with('errors', 'An unexpected error has occurred');
+        }
     }
 
     /**
@@ -104,10 +116,9 @@ class ContactController extends Controller
         try {
             $contact->delete();
             return back()->with('success', 'Contact successfully deleted');
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            return redirect()->back()->with('err', 'An unexpected error has occurred');         
+            return redirect()->back()->with('err', 'An unexpected error has occurred');
         }
     }
 }

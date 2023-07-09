@@ -33,7 +33,7 @@
                                 </svg> {{ $contact->email }}</p>
                             <div class="row">
                                 <div class="offset-2 col-5 px-0" style="text-align: right">
-                                    <a href="" class="btn btn-secondary mb-2"><svg xmlns="http://www.w3.org/2000/svg"
+                                    <a href="{{ route('contacts.edit', $contact->id) }}" class="btn btn-secondary mb-2"><svg xmlns="http://www.w3.org/2000/svg"
                                             width="16" height="16" fill="currentColor" class="bi bi-pencil-square"
                                             viewBox="0 0 16 16">
                                             <path
