@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +23,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::resource('/contact', ContactController::class)->except(['store']);
+Route::post('/contact', [ContactController::class, 'store'])->name('form.contact');
