@@ -25,7 +25,7 @@ class StoreContactRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'phone_number' => 'required|digits:9',
+            'phone_number' => 'required|digits:9|regex:/^[679]\d{8}$/',
             'email' => 'required | email',
             'age' => 'required | integer | min:1 | max:100'
         ];
@@ -40,7 +40,7 @@ class StoreContactRequest extends FormRequest
             'email.required' => 'A email is required',
             'email.email' => 'The email is not valid',
             'age.required' => 'The  age is required',
-            'age.integer' => 'The age must be a number'
+            'age.integer' => 'The age must be a number',
         ];
     }
 }

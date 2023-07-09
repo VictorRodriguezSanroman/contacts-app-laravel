@@ -19,7 +19,7 @@
                     <div class="card-header">{{ __('Create New Contact') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('form.contact') }}">
+                        <form method="POST" action="{{ route('contact.store') }}">
                             @csrf
 
                             <div class="row mb-3">

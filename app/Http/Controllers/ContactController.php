@@ -16,7 +16,6 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('contact');
     }
 
     /**
@@ -26,7 +25,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        //
+        return view('contact');
     }
 
     /**
@@ -39,13 +38,13 @@ class ContactController extends Controller
     {
         try {
             $find = Contact::where('name', $request->name)
-            ->where('phone_number', $request->phone_number)
-            ->where('email', $request->email)
-            ->where('age', $request->age)
-            ->first();
+                ->where('phone_number', $request->phone_number)
+                ->where('email', $request->email)
+                ->where('age', $request->age)
+                ->first();
 
-            if($find) return redirect()->back()->with('findIt', 'Contact already registered');
-            
+            if ($find) return redirect()->back()->with('findIt', 'Contact already registered');
+
             Contact::create([
                 'name' => $request->name,
                 'phone_number' => $request->phone_number,
