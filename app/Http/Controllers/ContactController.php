@@ -101,6 +101,13 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
-        //
+        try {
+            $contact->delete();
+            return back()->with('success', 'Contact successfully deleted');
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return redirect()->back()->with('err', 'An unexpected error has occurred');         
+        }
     }
 }

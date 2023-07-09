@@ -15,11 +15,16 @@
                         {{ session('findIt') }}
                     </div>
                 @endif
+                @if (session('err'))
+                    <div class="alert alert-danger" id='success-message'>
+                        {{ session('err') }}
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-header">{{ __('Create New Contact') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('contact.store') }}">
+                        <form method="POST" action="{{ route('contacts.store') }}">
                             @csrf
 
                             <div class="row mb-3">
@@ -100,9 +105,3 @@
         </div>
     </div>
 @endsection
-
-<script>
-    setTimeout(function() {
-        document.getElementById('success-message').style.display = 'none';
-    }, 5000);
-</script>

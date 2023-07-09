@@ -24,6 +24,7 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// // Route::resource('/contact', ContactController::class)->except(['store']);
-Route::get('/contact/create',  [ContactController::class, 'create'])->name('contact.create');
-Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
+// Route::resource('/contact', ContactController::class)->except(['store']);
+Route::get('/contacts/create',       [ContactController::class, 'create'])->name('contacts.create');
+Route::post('/contacts',             [ContactController::class, 'store'])->name('contacts.store');
+Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
