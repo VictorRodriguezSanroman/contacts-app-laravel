@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
@@ -37,20 +38,26 @@ class ContactController extends Controller
     public function store(StoreContactRequest $request)
     {
         try {
-            //TODO: Validar
-            //TODO: Verificar primero que no exista
+            $find = Contact::where('name', $request->name)
+            ->where('phone_number', $request->phone_number)
+            ->where('email', $request->email)
+            ->where('age', $request->age)
+            ->first();
 
+            if($find) return redirect()->back()->with('findIt', 'Contact already registered');
+            
             Contact::create([
                 'name' => $request->name,
-                'phone_number' => $request->phone_number
+                'phone_number' => $request->phone_number,
+                'email' => $request->email,
+                'age' => $request->age
             ]);
 
-            return redirect()->back()->with('success', 'Contacto añadido correctamente');
-
+            return redirect()->back()->with('success', 'Contact successfully added');
         } catch (\Throwable $th) {
-            //throw $th;
+            Log::error($th->getMessage());
+            return redirect()->back()->with('errors', 'An unexpected error has occurred');
         }
-
     }
 
     /**
