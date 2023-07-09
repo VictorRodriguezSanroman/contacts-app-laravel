@@ -17,7 +17,7 @@
                 <div class="col-md-4 mb-3">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h3 class="card-title text-capitalize">{{ $contact->name }}</h3>
+                            <a class="text-decoration-none text-white" href="{{route('contacts.show', $contact->id)}}"><h3 class="card-title text-capitalize">{{ $contact->name }}</h3></a>
                             <p class="m-2">Age: {{ $contact->age }}</p>
                             <p class="m-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
