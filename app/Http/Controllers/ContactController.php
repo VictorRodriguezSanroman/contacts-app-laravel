@@ -48,13 +48,7 @@ class ContactController extends Controller
 
             if ($find) return redirect()->back()->with('findIt', 'Contact already registered');
 
-            Contact::create([
-                'name' => $request->name,
-                'phone_number' => $request->phone_number,
-                'email' => $request->email,
-                'age' => $request->age,
-                'user_id' => $user->id
-            ]);
+            $user->contacts()->create($request->validated());
 
             return redirect()->back()->with('success', 'Contact successfully added');
         } catch (\Throwable $th) {
@@ -99,12 +93,9 @@ class ContactController extends Controller
     public function update(UpdateContactRequest $request, Contact $contact)
     {
         try {
-            $contact->update([
-                'name' => $request->name,
-                'phone_number' => $request->phone_number,
-                'email' => $request->email,
-                'age' => $request->age
-            ]);
+            $this->authorize('update', $contact);
+
+            $contact->update($request->validated());
 
             return redirect()->route('home')->with('success', 'Contact successfully updated');
         } catch (\Throwable $th) {
