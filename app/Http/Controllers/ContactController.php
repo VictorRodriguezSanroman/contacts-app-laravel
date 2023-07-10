@@ -16,7 +16,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('contacts.index',['contacts' => auth()->user()->contacts]);
+        return view('contacts.index', ['contacts' => auth()->user()->contacts]);
     }
 
     /**
@@ -43,7 +43,7 @@ class ContactController extends Controller
                 ->where('phone_number', $request->phone_number)
                 ->where('email', $request->email)
                 ->where('age', $request->age)
-                ->where('user_id',$user->id)
+                ->where('user_id', $user->id)
                 ->first();
 
             if ($find) return redirect()->back()->with('findIt', 'Contact already registered');
@@ -71,6 +71,8 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
+        $this->authorize('view', $contact);
+
         return view('contacts.show', compact('contact'));
     }
 
@@ -82,6 +84,8 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $this->authorize('update', $contact);
+
         return view('contacts.edit', compact('contact'));
     }
 
@@ -118,6 +122,7 @@ class ContactController extends Controller
     public function destroy(Contact $contact)
     {
         try {
+            $this->authorize('delete', $contact);
             $contact->delete();
             return back()->with('success', 'Contact successfully deleted');
         } catch (\Throwable $th) {
