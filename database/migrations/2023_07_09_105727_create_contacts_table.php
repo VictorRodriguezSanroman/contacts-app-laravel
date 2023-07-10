@@ -18,7 +18,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone_number');
             $table->string('email');
-            $table->tinyInteger('age',unsigned: true);
+            $table->tinyInteger('age', unsigned: true);
+            $table->foreignId('user_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

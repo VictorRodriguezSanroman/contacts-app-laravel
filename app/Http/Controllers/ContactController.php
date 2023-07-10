@@ -16,7 +16,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('contacts.index',['contacts' => Contact::all()]);
+        return view('contacts.index',['contacts' => auth()->user()->contacts]);
     }
 
     /**
@@ -38,10 +38,12 @@ class ContactController extends Controller
     public function store(StoreContactRequest $request)
     {
         try {
+            $user = auth()->user();
             $find = Contact::where('name', $request->name)
                 ->where('phone_number', $request->phone_number)
                 ->where('email', $request->email)
                 ->where('age', $request->age)
+                ->where('user_id',$user->id)
                 ->first();
 
             if ($find) return redirect()->back()->with('findIt', 'Contact already registered');
@@ -50,13 +52,14 @@ class ContactController extends Controller
                 'name' => $request->name,
                 'phone_number' => $request->phone_number,
                 'email' => $request->email,
-                'age' => $request->age
+                'age' => $request->age,
+                'user_id' => $user->id
             ]);
 
             return redirect()->back()->with('success', 'Contact successfully added');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            return redirect()->back()->with('errors', 'An unexpected error has occurred');
+            return redirect()->back()->with('err', 'An unexpected error has occurred');
         }
     }
 
@@ -102,7 +105,7 @@ class ContactController extends Controller
             return redirect()->route('home')->with('success', 'Contact successfully updated');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            return redirect()->back()->with('errors', 'An unexpected error has occurred');
+            return redirect()->back()->with('err', 'An unexpected error has occurred');
         }
     }
 
