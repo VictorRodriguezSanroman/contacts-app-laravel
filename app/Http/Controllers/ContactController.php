@@ -16,7 +16,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('contacts.index', ['contacts' => auth()->user()->contacts]);
+        return view('contacts.index', ['contacts' => auth()->user()->contacts()->orderBy('name','asc')->paginate(10)]);
     }
 
     /**
@@ -115,7 +115,7 @@ class ContactController extends Controller
         try {
             $this->authorize('delete', $contact);
             $contact->delete();
-            return back()->with('success', 'Contact successfully deleted');
+            return redirect()->back()->with('success', 'Contact successfully deleted');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return redirect()->back()->with('err', 'An unexpected error has occurred');

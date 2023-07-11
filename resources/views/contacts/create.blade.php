@@ -4,22 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-
-                @if (session('success'))
-                    <div class="alert alert-success" id='success-message'>
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if (session('findIt'))
-                    <div class="alert alert-danger" id='success-message'>
-                        {{ session('findIt') }}
-                    </div>
-                @endif
-                @if (session('err'))
-                    <div class="alert alert-danger" id='success-message'>
-                        {{ session('err') }}
-                    </div>
-                @endif
+            <x-alert/>
                 <div class="card">
                     <div class="card-header">{{ __('Create New Contact') }}</div>
 
