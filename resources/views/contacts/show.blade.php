@@ -7,6 +7,11 @@
                 <div class="card">
                     <div class="card-header">{{ __('Contact information') }}</div>
                     <div class="card-body">
+                        <div class="d-flex justify-content-center mb-2">
+                            <a href="{{ route('contacts.show', $contact->id) }}">
+                                <img  src="{{ Storage::url($contact->profile_picture) }}" style="width: 300px">
+                            </a>
+                        </div>
                         <h3 class="card-title text-capitalize">{{ $contact->name }}</h3>
                         <p class="m-2">Age: {{ $contact->age }}</p>
                         <p class="m-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

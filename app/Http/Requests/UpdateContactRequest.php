@@ -27,7 +27,8 @@ class UpdateContactRequest extends FormRequest
             'name' => 'required|string',
             'phone_number' => 'required|digits:9|regex:/^[679]\d{8}$/',
             'email' => 'required | email',
-            'age' => 'required | integer | min:1 | max:100'
+            'age' => 'required | integer | min:1 | max:100',
+            'profile_picture' => 'nullable | image'
         ];
     }
 

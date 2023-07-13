@@ -20,6 +20,15 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .pagination .page-item:not(.active) .page-link {
+            background-color: #375a7f;
+        }
+        .pagination .active .page-link {
+            background-color: #5e92ca;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -58,12 +67,13 @@
                                 </li>
                             @endif
                         @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('contacts.index') }}">{{ __('My contacts') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('contacts.create') }}">{{ __('Create new contact') }}</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('contacts.index') }}">{{ __('My contacts') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="{{ route('contacts.create') }}">{{ __('Create new contact') }}</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -98,4 +108,5 @@
         document.getElementById('success-message').style.display = 'none';
     }, 5000);
 </script>
+
 </html>

@@ -16,7 +16,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('contacts.index', ['contacts' => auth()->user()->contacts()->orderBy('name','asc')->paginate(10)]);
+        return view('contacts.index', ['contacts' => auth()->user()->contacts()->orderBy('name', 'asc')->paginate(10)]);
     }
 
     /**
@@ -48,7 +48,14 @@ class ContactController extends Controller
 
             if ($find) return redirect()->back()->with('findIt', 'Contact already registered');
 
-            $user->contacts()->create($request->validated());
+            $data = $request->validated();
+
+            if ($request->hasFile('profile_picture')) {
+                $path = $request->file('profile_picture')->store('profiles', 'public');
+                $data['profile_picture'] = $path;
+            }
+
+            $user->contacts()->create($data);
 
             return redirect()->back()->with('success', 'Contact successfully added');
         } catch (\Throwable $th) {
@@ -95,7 +102,14 @@ class ContactController extends Controller
         try {
             $this->authorize('update', $contact);
 
-            $contact->update($request->validated());
+            $data = $request->validated();
+
+            if ($request->hasFile('profile_picture')) {
+                $path = $request->file('profile_picture')->store('profiles', 'public');
+                $data['profile_picture'] = $path;
+            }
+            
+            $contact->update($data);
 
             return redirect()->route('home')->with('success', 'Contact successfully updated');
         } catch (\Throwable $th) {
