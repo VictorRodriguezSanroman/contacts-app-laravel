@@ -4,6 +4,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+ 
+Route::get('/billing-portal', function (Request $request) {
+    return $request->user()->redirectToBillingPortal();
+});
+
+Route::get('/checkout', function (Request $request) {
+    return $request->user()
+        ->newSubscription('default', config('stripe.price_id'))
+        ->checkout();
+});
 
 Route::get('/', fn ()=> auth()->check() ? redirect('/home') : view('welcome'));
 
@@ -31,3 +42,4 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 // Route::get('/contacts',                [ContactController::class, 'index'])->name('contacts.index');
 
 Route::resource('contacts', ContactController::class);
+
