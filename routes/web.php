@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,22 +16,14 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
- 
-Route::get('/billing-portal', function (Request $request) {
-    return $request->user()->redirectToBillingPortal();
-});
 
-Route::get('/checkout', function (Request $request) {
-    return $request->user()
-        ->newSubscription('default', config('stripe.price_id'))
-        ->checkout();
-});
+Route::get('/billing-portal', [StripeController::class, 'billing'])->name('billing-portal');
+Route::get('/checkout',       [StripeController::class, 'checkout'])->name('checkout');
+Route::get('free-trial-end',  [StripeController::class, 'freeTrialend'])->name('free-trial-end');
 
-Route::get('/', fn ()=> auth()->check() ? redirect('/home') : view('welcome'));
+Route::get('/', fn () => auth()->check() ? redirect('/home') : view('welcome'));
 
 Auth::routes();
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Route::get('/contacts/create',         [ContactController::class, 'create'])->name('contacts.create');
 // Route::post('/contacts/',              [ContactController::class, 'store'])->name('contacts.store');
@@ -41,5 +33,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 // Route::delete('/contacts/{contact}',   [ContactController::class, 'destroy'])->name('contacts.destroy');
 // Route::get('/contacts',                [ContactController::class, 'index'])->name('contacts.index');
 
-Route::resource('contacts', ContactController::class);
 
+Route::middleware(['auth', 'subscription'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::resource('contacts', ContactController::class);
+});

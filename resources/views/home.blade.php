@@ -3,8 +3,6 @@
 @section('content')
     <div class="container">
         <x-alert />
-
-
         <div class="row">
             @forelse ($contacts as $contact)
                 <div class="col-md-4 mb-3">

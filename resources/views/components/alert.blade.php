@@ -20,7 +20,8 @@
             $freeTrialDays = now()->diffInDays(auth()->user()->trial_ends_at);
         @endphp
         <div class="alert alert-info">
-            Trial ends in {{ $freeTrialDays }} days
+            Trial ends in {{ $freeTrialDays }} days 
+            <a href="{{route('checkout')}}">Subscribed here</a>
         </div>
     @endif
 </div>
