@@ -24,10 +24,10 @@
         .pagination .page-item:not(.active) .page-link {
             background-color: #375a7f;
         }
+
         .pagination .active .page-link {
             background-color: #5e92ca;
         }
-
     </style>
 </head>
 
@@ -67,6 +67,9 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('contact-shares.create') }}">{{ __('Share contacts') }}</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('contacts.index') }}">{{ __('My contacts') }}</a>
                             </li>
