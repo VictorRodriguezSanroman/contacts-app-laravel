@@ -5,11 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class ContactShareController extends Controller
 {
+    public function index()
+    {
+        $contactSharedWithUser = auth()->user()
+            ->shareContacts()
+            ->with('user')
+            ->get();
+
+        $contactSharedByUser = auth()->user()
+            ->contacts()
+            ->with(['sharedWithUsers' => fn ($query) => $query->withPivot('id')])
+            ->get()
+            ->filter(fn ($contact) => $contact->sharedWithUsers->isNotEmpty());
+
+        return view('contact-shares.index', compact('contactSharedWithUser'), compact('contactSharedByUser'));
+    }
+
     public function create()
     {
         return view('contact-shares.create');
@@ -40,5 +57,19 @@ class ContactShareController extends Controller
             Log::error($th->getMessage());
             return redirect()->back()->with('err', $th->getMessage());
         }
+    }
+
+    public function destroy(int $id)
+    {
+        $contactShare = DB::selectOne('SELECT * FROM contact_shares WHERE id = ?', [$id]);
+
+        $contact = Contact::findOrFail($contactShare->contact_id);
+
+        abort_if($contact->user_id !== auth()->id(), 403);
+
+        $contact->sharedWithUsers()->detach($contactShare->user_id);
+
+        return redirect()->back()->with('success', 'Contact shared successfully deleted');
+
     }
 }

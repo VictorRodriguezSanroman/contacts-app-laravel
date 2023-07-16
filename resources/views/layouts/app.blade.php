@@ -68,6 +68,9 @@
                             @endif
                         @else
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('contact-shares.index') }}">{{ __('Shared contacts') }}</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('contact-shares.create') }}">{{ __('Share contacts') }}</a>
                             </li>
                             <li class="nav-item">

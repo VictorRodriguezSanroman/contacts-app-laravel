@@ -30,7 +30,10 @@ class ContactPolicy
      */
     public function view(User $user, Contact $contact)
     {
-        return $user->id === $contact->user_id;
+        $sharedContactWithUser = $user->shareContacts()
+            ->firstWhere('contact_id', $contact->id);
+
+        return $user->id === $contact->user_id || $sharedContactWithUser;
     }
 
     /**
