@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
@@ -56,6 +57,8 @@ class ContactController extends Controller
             }
 
             $user->contacts()->create($data);
+
+            Cache::forget((auth()->id()));
 
             return redirect()->back()->with('success', 'Contact successfully added');
         } catch (\Throwable $th) {
@@ -111,6 +114,8 @@ class ContactController extends Controller
             
             $contact->update($data);
 
+            Cache::forget((auth()->id()));
+
             return redirect()->route('home')->with('success', 'Contact successfully updated');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
@@ -129,6 +134,9 @@ class ContactController extends Controller
         try {
             $this->authorize('delete', $contact);
             $contact->delete();
+            
+            Cache::forget((auth()->id()));
+
             return redirect()->back()->with('success', 'Contact successfully deleted');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
