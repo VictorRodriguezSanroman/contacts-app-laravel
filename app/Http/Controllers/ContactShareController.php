@@ -48,7 +48,7 @@ class ContactShareController extends Controller
             $user    = User::where('email', $data['user_email'])->first();
             $contact = Contact::where('email', $data['contact_email'])->first(['id']);
 
-            $shareExists = Contact::find(30)->sharedWithUsers()->wherePivot('user_id', $user->id)->first();
+            $shareExists = $contact->sharedWithUsers()->wherePivot('user_id', $user->id)->first();
 
             if ($shareExists) {
                 return back()->withInput($request->all())->with('err', "This contact has already shared with user $user->name");
